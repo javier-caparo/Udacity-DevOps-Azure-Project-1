@@ -1,0 +1,59 @@
+{
+	"variables": {
+		"client_id": "{{env `CLIENT_ID`}}",
+		"client_secret": "{{env `CLIENT_SECRET`}}",
+        "subscription_id": "{{env `SUBSCRIPTION_ID`}}",
+        "tenant_id": "{{env `TENANT_ID`}}",
+
+        "azure-resource-group": "udacity-packerimage-rg",
+        "azure-region": "centralus",
+        "vm-size": "Standard_B1ls"
+
+
+	},
+	"builders": [{
+        "type": "azure-arm",
+
+        "client_id": "{{user `client_id`}}",
+        "client_secret": "{{user `client_secret`}}",
+        "tenant_id": "{{user `tenant-id`}}",
+        "subscription_id": "{{user `subscription_id`}}",
+    
+        "os_type": "Linux",
+        "image_publisher": "Canonical",
+        "image_offer": "UbuntuServer",
+        "image_sku": "18.04-LTS",
+    
+        "managed_image_resource_group_name": "{{user `azure-resource-group`}}",
+        "managed_image_name": "udacity-server-image",
+
+        "azure_tags": {
+            "project-name": "Deploying a HA Web Server in Azure using Terraform"
+        },
+    
+        "location": "{{user `azure-region`}}",
+        "vm_size": "{{user `vm-size`}}"
+	}],
+	"provisioners": [
+		{
+			"type":"file",
+			"source": "Packer/http.service",
+			"destination": "~/http.service"
+		},
+		{
+		"inline": [
+			"apt-get update",
+			"apt-get upgrade -y",
+			"echo 'Hello, World!' > index.html",
+			"sudo mv http.service /etc/systemd/system",
+			"sudo chown root:root /etc/systemd/system/http.service",
+			"sudo chmod 777 /etc/systemd/system/http.service",
+			"sudo systemctl daemon-reload",
+			"sudo systemctl enable http"
+
+		],
+		"inline_shebang": "/bin/sh -x",
+		"type": "shell",
+		"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"	
+	}]
+}

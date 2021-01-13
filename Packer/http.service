@@ -1,0 +1,14 @@
+[Unit]
+Description=HTTP Hello World
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=packer
+ExecStart=/usr/bin/nohup /bin/busybox httpd -f -p 8080 -h /home/packer
+
+[Install]
+WantedBy=multi-user.target
