@@ -1,0 +1,8 @@
+{
+    "tagName":{
+        "value":"project-name"
+    },
+    "tagValue":{
+        "value":"Deploying a HA Web Server in Azure using Terraform" 
+    }
+}
