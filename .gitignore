@@ -6,7 +6,7 @@ terraform.tfstate
 Terraform/terraform.tfstate
 Terraform/terraform.tfstate.backup
 
-Terraform/terraform.tfvars
+
 
 # Crash log files
 **/crash.log/*
