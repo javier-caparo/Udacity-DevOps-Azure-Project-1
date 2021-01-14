@@ -44,7 +44,7 @@ c. Assign the Policy ( naming "tagging-policy") to the global Scope ( subscripti
 az policy assignment create --name tagging-policy --policy tagging-policy --param Policy/tagging_assignment.params.json
 ```
 
-d. Chekc the policy was assigned:
+d. Check the policy was assigned:
 ```sh
 az policy assignment show --name tagging-policy
 ```
@@ -87,7 +87,7 @@ export SUBSCRIPTION_ID="<subscription_id value from above command> "
 Note: check with echo $CLIENT_ID ( for example)
 ```
 
-e. Run the following command  to build your server image. This may take a while ( aprox 10 minutes) so grab a cup of coffe.
+e. Run the following command  to build your server image. This may take a while ( aprox 10 minutes) so grab a cup of coffee.
 ```sh
 packer build Packer/server.json
 ```
@@ -115,7 +115,7 @@ The terraform file creates the following resources listed below:
 - resource group
 - virtual network
 - subnet
-- network security group limiting access
+- network security group limiting access ( 4 minumun rules now!!!)
 - network interfaces
 - a public ip
 - load balancer
@@ -128,9 +128,13 @@ to do that use the files:
 | ------ | ------ |
 |main.tf| Provider and resources|
 |vars.tf| Variables|
+|locals.tf| Security Rules block for our Net Security Group Rules|
 |terraform.tfvars| to provide default variable values|
 
-a.  Therfore, basically use the `terraform.tfvars` to add yor variables ( location , client_id, client_secret, tenant_id, susbcription_id; some network settings, somevm settings)
+Note:
+* Local values can be helpful to avoid repeating the same values or expressions multiple times in a configuration. That's why we are using here in `locals.tf` file ( as a block that will be used in a resource "azurerm_network_security_rule" multiple times )
+
+a.  Therefore, basically use the `terraform.tfvars` to add yor variables ( location , client_id, client_secret, tenant_id, susbcription_id; some network settings, some vm settings)
 
  - use the same values , for example, of the commands that you executed already in packer
  ```sh
@@ -165,7 +169,7 @@ Example:
 ```sh
 Outputs:
 
-lb_url = "http://40.77.66.54/"
+lb_url = "http://52.165.135.210/"
 ```
 
 f. You can check your IaaC is working with `curl` command or going to that URL in your browser

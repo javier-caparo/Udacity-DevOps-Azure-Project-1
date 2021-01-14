@@ -26,23 +26,27 @@ resource "azurerm_resource_group" "main" {
   location = var.location
 }
 
+#create the network security group specificed 
 resource "azurerm_network_security_group" "main" {
   name                = "${var.prefix}-nsg"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+}
 
-  //Add a security rule for the VM's to recieve HTTP data on port 8080.
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "8080"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
+#Link the Security Rules defined on locals.tf for easy understanding
+resource "azurerm_network_security_rule" "mynsgrules" {
+  for_each                    = local.nsgrules 
+  name                        = each.key
+  direction                   = each.value.direction
+  access                      = each.value.access
+  priority                    = each.value.priority
+  protocol                    = each.value.protocol
+  source_port_range           = each.value.source_port_range
+  destination_port_range      = each.value.destination_port_range
+  source_address_prefix       = each.value.source_address_prefix
+  destination_address_prefix  = each.value.destination_address_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.main.name
 }
 
 resource "azurerm_virtual_network" "main" {

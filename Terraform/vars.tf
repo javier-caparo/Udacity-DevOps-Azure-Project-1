@@ -110,7 +110,7 @@ variable "prefix" {
 }
 
 variable "num_of_vms" {
-  description = "Number of VM resources to create behund the load balancer"
-  default     = 3
+  description = "Number of VM resources to create behind the load balancer"
+  default     = 2
   type        = number
 }
