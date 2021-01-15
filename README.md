@@ -201,6 +201,15 @@ az image delete --name udacity-server-image  --resource-group udacity-packerimag
 az group delete -n udacity-packerimage-rg
 ```
 
+- delete the Policy Assignment
+```sh
+az policy assignment delete --name tagging-policy
+```
+
+- delete the Policy Definition
+```sh
+
+```
 
 That's all!!!!!!!!!
 
