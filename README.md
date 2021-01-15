@@ -208,7 +208,7 @@ az policy assignment delete --name tagging-policy
 
 - delete the Policy Definition
 ```sh
-
+az policy definition delete --name tagging-policy
 ```
 
 That's all!!!!!!!!!
